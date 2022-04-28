@@ -3,9 +3,13 @@ const Engine = Matter.Engine;
 const World = Matter.World;
 const Bodies = Matter.Bodies;
 const Body = Matter.Body;
+const CRIANDO = "CRIANDO"
+const CRIADO = "CRIADO"
 var podePular = true
 var podeAgachar = true
 var allblocks = []
+var EstadoJogo = CRIANDO
+
 function preload() {
 	imagemPurpleParado = loadImage("images/purpleParado.png")
 	imagemPurpleAgachado = loadImage("images/purpleAgachado.png")
@@ -18,18 +22,23 @@ function setup() {
 	createCanvas(800, 700);
 
 	blocos = new Group();
-	collideblocos = new Group ();
+	collideblocos = new Group();
 	edges = createEdgeSprites ();
 	chao = createSprite(450, 720, 900, 50)
 	blocos.add(chao)
-	
 
-	createPurple();
 	engine = Engine.create();
 	world = engine.world;
 
 	//Crie os Corpos aqui.
-
+	criarBlocos(200,650,40,20);
+	criarBlocos(400,500,20,20);
+	criarBlocos(270,600,20,20);
+	criarBlocos(270,600,20,20);
+	criarBlocos(180,300,200,30);
+	criarBlocos(350,600,50,20);
+	criarBlocos(550,620,200,20);
+	createPurple();
 	Engine.run(engine);
 
 }
@@ -38,8 +47,7 @@ function setup() {
 function draw() {
 	rectMode(CENTER);
 	background(238, 173, 45)
-
-	criarBlocos(200,200,200,200);
+	
 	configsPurple();
 
 
@@ -53,52 +61,62 @@ function configsPurple() {
 	regrasPurple()
 }
 
+function criarMundo () {
+
+}
+
 function regrasPurple() {
+	purpleGuyImage.x = purpleGuy.x
+	purpleGuyImage.y = purpleGuy.y - 22
+	purpleGuy.collide(collideblocos)
 	purpleGuy.collide(edges)
 	if (purpleGuy.velocityY > -1 && purpleGuy.velocityY < 1 && purpleGuy.isTouching (blocos)) {
 	podeAgachar = true
 	} else {
 		podeAgachar = false;
 	}
+	if (purpleGuy.velocityY < -1 || purpleGuy.velocityY > 1) {
+		purpleGuyImage.addImage(imagemPurplePulando)
+	}
 }
 
 function createPurple() {
-	purpleGuy = createSprite(400, 200, 20, 40)
-	purpleGuy.addImage(imagemPurpleParado)
+	purpleGuy = createSprite(400, 672, 20, 56)
+	purpleGuy.visible = false
+	purpleGuyImage = createSprite(400,600,20,56)
+	purpleGuyImage.addImage(imagemPurpleParado)
 }
 
 function controlesPurple() {
 	if (keyDown("W") && podePular == true) {
 		purpleGuy.velocityY = -5
-		purpleGuy.addImage(imagemPurplePulando)
+		purpleGuyImage.addImage(imagemPurplePulando)
 		podePular = false
 	}
 	else {
-		purpleGuy.addImage(imagemPurpleParado)
+		purpleGuyImage.addImage(imagemPurpleParado)
 
 	}
 	if (keyDown("S") && podeAgachar == true) {
-		purpleGuy.addImage(imagemPurpleAgachado)
+		purpleGuyImage.addImage(imagemPurpleAgachado)
 		podePular = true
 	} else if (keyDown("A")) {
 		purpleGuy.x = purpleGuy.x - 2
-		purpleGuy.addImage(imagemPurpleEsquerda)
+		purpleGuyImage.addImage(imagemPurpleEsquerda)
 	} else if (keyDown("D")) {
 		purpleGuy.x = purpleGuy.x + 2
-		purpleGuy.addImage(imagemPurpleDireita)
+		purpleGuyImage.addImage(imagemPurpleDireita)
 	}
 }
 
 function criarBlocos(xpos,ypos,xblock,yblock) {
-	for ( var i = 0; i < width; i ++) {
 		var bloco = createSprite (xpos,ypos,xblock,yblock)
+		var collidebloco = createSprite (xpos,ypos+10,xblock,yblock)
 		bloco.shapeColor = "green"
-		collideblock = createSprite (xpos,ypos+20,xblock,yblock)
 		collideblock = "brown"
-		allblocks[i] = (bloco)
+		//allblocks[i] = (bloco)
 		blocos.add (bloco)
-		collideblock
-	}
+		collideblocos.add (collidebloco)
 
 
 }
