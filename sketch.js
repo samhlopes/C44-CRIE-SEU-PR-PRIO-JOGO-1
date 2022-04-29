@@ -7,6 +7,10 @@ const CRIANDO = "CRIANDO"
 const CRIADO = "CRIADO"
 var podePular = true
 var podeAgachar = true
+var podeDash = true
+var posicaoX = 0
+var purpleGuyVelocity = 0
+var estaEmDash = false
 var allblocks = []
 var EstadoJogo = CRIANDO
 
@@ -37,7 +41,9 @@ function setup() {
 	criarBlocos(270,600,20,20);
 	criarBlocos(180,300,200,30);
 	criarBlocos(350,600,50,20);
-	criarBlocos(550,620,200,20);
+	criarBlocos(525,610,200,20);
+	criarBlocos(780, 640, 50,10)
+	criarBlocos(780, 570, 50,10)
 	createPurple();
 	Engine.run(engine);
 
@@ -59,11 +65,38 @@ function configsPurple() {
 	purpleGuy.velocityY = purpleGuy.velocityY + 0.2
 	controlesPurple()
 	regrasPurple()
+	purpleDash();
 }
 
 function criarMundo () {
 
 }
+
+function purpleDash() {
+	if (keyDown("E") && podeDash == true) {
+		//dash para a direita
+		iniciarDash();
+	}
+
+	finalizarDash();
+
+}
+
+
+function iniciarDash () {
+
+	purpleGuy.velocityX = 3
+	posicaoX = purpleGuy.x;
+	estaEmDash = true;
+  }
+  
+  function finalizarDash() {
+	var distancia = posicaoX - purpleGuy.x;
+	if (distancia >= 100 || purpleGuy.x <= 100) {
+	  purpleGuy.velocityX = 0;
+	  estaEmDash = false;
+	}
+  }
 
 function regrasPurple() {
 	purpleGuyImage.x = purpleGuy.x
@@ -71,9 +104,11 @@ function regrasPurple() {
 	purpleGuy.collide(collideblocos)
 	purpleGuy.collide(edges)
 	if (purpleGuy.velocityY > -1 && purpleGuy.velocityY < 1 && purpleGuy.isTouching (blocos)) {
-	podeAgachar = true
+	podeAgachar = true;
+	podeDash = true;
 	} else {
 		podeAgachar = false;
+		podeDash = false
 	}
 	if (purpleGuy.velocityY < -1 || purpleGuy.velocityY > 1) {
 		purpleGuyImage.addImage(imagemPurplePulando)
