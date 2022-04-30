@@ -36,14 +36,23 @@ function setup() {
 
 	//Crie os Corpos aqui.
 	criarBlocos(200,650,40,20);
+	criarBlocos(300, 320, 50,10)
 	criarBlocos(400,500,20,20);
 	criarBlocos(270,600,20,20);
 	criarBlocos(270,600,20,20);
-	criarBlocos(180,300,200,30);
+	criarBlocos(180,300,200,50);
 	criarBlocos(350,600,50,20);
 	criarBlocos(525,610,200,20);
 	criarBlocos(780, 640, 50,10)
 	criarBlocos(780, 570, 50,10)
+	criarBlocos(780, 500, 50,10)
+	criarBlocos(780, 430, 50,10)
+	criarBlocos(610, 400, 50,10)
+	criarBlocos(450, 370, 50,10)
+	criarBlocos(600, 590, 50,60)
+	criarBlocos(500, 520, 50,10)
+	criarBlocos(300, 320, 50,10)
+	
 	createPurple();
 	Engine.run(engine);
 
@@ -75,15 +84,23 @@ function criarMundo () {
 function purpleDash() {
 	if (keyDown("E") && podeDash == true) {
 		//dash para a direita
-		iniciarDash();
+		purpleGuy.x = purpleGuy.x +20
+		podeDash = false
+		//iniciarDash();
 	}
 
-	finalizarDash();
+	if (keyDown("Q") && podeDash == true) {
+		//dash para a direita
+		purpleGuy.x = purpleGuy.x -20
+		podeDash = false
+	}
+
+	//finalizarDash();
 
 }
 
 
-function iniciarDash () {
+/* function iniciarDash () {
 
 	purpleGuy.velocityX = 3
 	posicaoX = purpleGuy.x;
@@ -96,7 +113,7 @@ function iniciarDash () {
 	  purpleGuy.velocityX = 0;
 	  estaEmDash = false;
 	}
-  }
+  } */ 
 
 function regrasPurple() {
 	purpleGuyImage.x = purpleGuy.x
@@ -108,7 +125,6 @@ function regrasPurple() {
 	podeDash = true;
 	} else {
 		podeAgachar = false;
-		podeDash = false
 	}
 	if (purpleGuy.velocityY < -1 || purpleGuy.velocityY > 1) {
 		purpleGuyImage.addImage(imagemPurplePulando)
@@ -123,7 +139,7 @@ function createPurple() {
 }
 
 function controlesPurple() {
-	if (keyDown("W") && podePular == true) {
+	if (keyDown("space") && podePular == true) {
 		purpleGuy.velocityY = -5
 		purpleGuyImage.addImage(imagemPurplePulando)
 		podePular = false
